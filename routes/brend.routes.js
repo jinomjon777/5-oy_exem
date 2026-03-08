@@ -7,9 +7,9 @@ const authorization = require("../middleware/authorization")
 
 const brendRouter = Router()
 
-brendRouter.get("/get_all_brends", authorization, getAllBrend)
-brendRouter.get("/get_one_brend/:id", authorization, getOneBrend)
-brendRouter.get("/search", authorization, search)
+brendRouter.get("/get_all_brends", getAllBrend)
+brendRouter.get("/get_one_brend/:id", getOneBrend)
+brendRouter.get("/search", search)
 
 brendRouter.post("/add_brend", authorization, adminMiddleware, brendValidatorMiddleware, addBrend)
 brendRouter.put("/update_brend/:id", authorization, adminMiddleware, updateBrend)

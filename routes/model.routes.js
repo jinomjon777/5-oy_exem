@@ -7,9 +7,9 @@ const authorization = require("../middleware/authorization")
 
 const Modelrouter = Router()
 
-Modelrouter.get("/get_all_models", authorization, getAllModels)
-Modelrouter.get("/get_one_model/:id", authorization, getOneModel)
-Modelrouter.get("/get_models_by_brend/:brendId", authorization, getModelsByBrend)
+Modelrouter.get("/get_all_models", getAllModels)
+Modelrouter.get("/get_one_model/:id", getOneModel)
+Modelrouter.get("/get_models_by_brend/:brendId", getModelsByBrend)
 
 Modelrouter.post("/add_model", authorization, adminMiddleware, addModel)
 Modelrouter.put("/update_model/:id", authorization, adminMiddleware, updateModel)

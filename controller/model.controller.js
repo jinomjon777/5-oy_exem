@@ -1,113 +1,195 @@
-const Model = require("../schema/model.schema")
+const CustomErrorhandler = require("../error/custom-error.handler")
+const ModelSchema = require("../schema/model.schema")
+const BrendSchema = require("../schema/brend.schema")
 
 const getAllModels = async (req,res,next)=>{
-try{
+  try{
 
-const models = await Model.find().populate("brendInfo")
+    const models = await ModelSchema.find()
+      .select("title price imageURL")
 
-res.status(200).json(models)
+    res.status(200).json(models)
 
-}catch(error){
-next(error)
+  }catch(error){
+    next(error)
+  }
 }
-}
-
 
 const getOneModel = async (req,res,next)=>{
-try{
+  try{
 
-const {id} = req.params
+    const { id } = req.params
 
-const model = await Model.findById(id).populate("brendInfo")
+    const foundedModel = await ModelSchema.findById(id)
+      .populate("brendInfo", "brendName imageURL")
 
-res.status(200).json(model)
+    if(!foundedModel){
+      throw CustomErrorhandler.NotFound("Model not found")
+    }
 
-}catch(error){
-next(error)
+    res.status(200).json(foundedModel)
+
+  }catch(error){
+    next(error)
+  }
 }
-}
-
-
-const addModel = async (req,res,next)=>{
-try{
-
-const {title,price,imageURL,brendInfo} = req.body
-
-const model = await Model.create({
-title,
-price,
-imageURL,
-brendInfo
-})
-
-res.status(201).json(model)
-
-}catch(error){
-next(error)
-}
-}
-
-
-const updateModel = async (req,res,next)=>{
-try{
-
-const {id} = req.params
-const {title, price, imageURL, brendInfo} = req.body
-
-await Model.findByIdAndUpdate(id,{
-title,
-price,
-imageURL,
-brendInfo
-})
-
-res.status(200).json({
-message:"Model updated"
-})
-
-}catch(error){
-next(error)
-}
-}
-
-
-const deleteModel = async (req,res,next)=>{
-try{
-
-const {id} = req.params
-
-await Model.findByIdAndDelete(id)
-
-res.status(200).json({
-message:"Model deleted"
-})
-
-}catch(error){
-next(error)
-}
-}
-
 
 const getModelsByBrend = async (req,res,next)=>{
-try{
+  try{
 
-const {brendId} = req.params
+    const { brendId } = req.params
 
-const models = await Model.find({ brendInfo: brendId })
-.populate("brendInfo")
+    const models = await ModelSchema.find({ brendInfo: brendId })
+      .select("title price imageURL")
 
-res.status(200).json(models)
+    res.status(200).json(models)
 
-}catch(error){
-next(error)
+  }catch(error){
+    next(error)
+  }
 }
+
+const addModel = async (req,res,next)=>{
+  try{
+
+    const {
+      brendInfo,
+      title,
+      tanirovkasi,
+      motor,
+      year,
+      color,
+      distance,
+      gearbook,
+      price,
+      description,
+      insideImage,
+      outsideImage,
+      imageURL
+    } = req.body
+
+    const foundedBrend = await BrendSchema.findById(brendInfo)
+
+    if(!foundedBrend){
+      throw CustomErrorhandler.NotFound("Brend not found")
+    }
+
+    const newModel = await ModelSchema.create({
+      brendInfo,
+      title,
+      tanirovkasi,
+      motor,
+      year,
+      color,
+      distance,
+      gearbook,
+      price,
+      description,
+      insideImage,
+      outsideImage,
+      imageURL
+    })
+
+    res.status(201).json({
+      message: "Added model",
+      data: newModel
+    })
+
+  }catch(error){
+    next(error)
+  }
+}
+
+const updateModel = async (req,res,next)=>{
+  try{
+
+    const { id } = req.params
+
+    const {
+      brendInfo,
+      title,
+      tanirovkasi,
+      motor,
+      year,
+      color,
+      distance,
+      gearbook,
+      price,
+      description,
+      insideImage,
+      outsideImage,
+      imageURL
+    } = req.body
+
+    const foundedModel = await ModelSchema.findById(id)
+
+    if(!foundedModel){
+      throw CustomErrorhandler.NotFound("Model not found")
+    }
+
+    const foundedBrend = await BrendSchema.findById(brendInfo)
+
+    if(!foundedBrend){
+      throw CustomErrorhandler.NotFound("Brend not found")
+    }
+
+    const updatedModel = await ModelSchema.findByIdAndUpdate(
+      id,
+      {
+        brendInfo,
+        title,
+        tanirovkasi,
+        motor,
+        year,
+        color,
+        distance,
+        gearbook,
+        price,
+        description,
+        insideImage,
+        outsideImage,
+        imageURL
+      },
+      { new: true }
+    )
+
+    res.status(200).json({
+      message: "Updated model",
+      data: updatedModel
+    })
+
+  }catch(error){
+    next(error)
+  }
+}
+
+const deleteModel = async (req,res,next)=>{
+  try{
+
+    const { id } = req.params
+
+    const foundedModel = await ModelSchema.findById(id)
+
+    if(!foundedModel){
+      throw CustomErrorhandler.NotFound("Model not found")
+    }
+
+    await ModelSchema.findByIdAndDelete(id)
+
+    res.status(200).json({
+      message: "Deleted model"
+    })
+
+  }catch(error){
+    next(error)
+  }
 }
 
 module.exports = {
-getAllModels,
-getOneModel,
-addModel,
-updateModel,
-deleteModel,
-getModelsByBrend
+  getAllModels,
+  getOneModel,
+  getModelsByBrend,
+  addModel,
+  updateModel,
+  deleteModel
 }
