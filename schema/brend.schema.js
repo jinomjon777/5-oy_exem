@@ -19,7 +19,10 @@ const Brend = new Schema(
       minlength: [3, "Brend nomi kamida 3 ta belgidan iborat bo'lishi kerak"],
       maxlength: [50,"Brend nomi juda uzun"],
     },
-
+    createdBy:{
+    type:Schema.Types.ObjectId,
+    ref:"auth"
+  },
   },
   {
     versionKey: false,

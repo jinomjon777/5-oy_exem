@@ -10,15 +10,12 @@ const Model = new Schema(
 
     title: {
       type: String,
-      required: [true, "Model nomi majburiy"],
-      trim: true,
-      minlength: [2, "Model nomi juda qisqa"],
-      maxlength: [50, "Model nomi juda uzun"],
+      required: true,
+      trim: true
     },
 
     tanirovkasi: {
       type: String,
-      required: true,
       default: "Yo'q"
     },
 
@@ -69,6 +66,12 @@ const Model = new Schema(
 
     imageURL: {
       type: String,
+      required: true
+    },
+
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "auth",
       required: true
     }
   },

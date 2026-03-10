@@ -41,67 +41,9 @@ try{
 }
 }
 
-const addBrend = async (req,res, next)=>{
-try{
- const {brendName, imageURL}=req.body
-
- await BrendSchema.create({brendName, imageURL})
-
- res.status(201).json({
-  message: "Added brend"
- })
-}catch(error){
- next(error)
-}
-}
-
-const updateBrend = async (req,res, next)=>{
-try{
-  const {brendName, imageURL}=req.body
-  const {id}=req.params
-
-  foundedBrend=await BrendSchema.findById(id)
-
-  if(!foundedBrend){
-    throw CustomErrorhandler.NotFound("Brend not found")
-  }
-
-  await BrendSchema.findByIdAndUpdate(id, {brendName, imageURL})
-
-  res.status(200).json({
-    message: "Updated brend"
-  })
-}catch(error){
- next(error)
-}
-}
-
-const deleteBrend = async (req,res, next)=>{
-try{
-  const {id}=req.params
-
-  foundedBrend=await BrendSchema.findById(id)
-
-  if(!foundedBrend){
-    throw CustomErrorhandler.NotFound("Brend not found")
-  }
-
-  await BrendSchema.findByIdAndDelete(id)
-
-  res.status(200).json({
-    message: "Deleted brend"
-  })
-}catch(error){
-  next(error)
-}
-}
-
 
 module.exports={
   getAllBrend,
   search,
   getOneBrend,
-  addBrend,
-  updateBrend,
-  deleteBrend
 }

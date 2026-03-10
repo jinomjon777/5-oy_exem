@@ -1,0 +1,342 @@
+openapi: 3.0.3
+info:
+  title: Auth API
+  version: 1.0.0
+  description: OTP orqali ro'yxatdan o'tish, login, verify, logout, refresh va forgot password API hujjati
+
+servers:
+  - url: http://localhost:4001
+    description: Local server
+
+tags:
+  - name: Auth
+    description: Authentication endpoints
+
+paths:
+  /register:
+    post:
+      tags:
+        - Auth
+      summary: Foydalanuvchini ro'yxatdan o'tkazish
+      description: Yangi foydalanuvchi yaratadi va emailga OTP yuboradi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              username: Ali Valiyev
+              email: ali@example.com
+              password: "123456"
+      responses:
+        '200':
+          description: Muvaffaqiyatli ro'yxatdan o'tdi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+              example:
+                message: Registered
+        '400':
+          description: Foydalanuvchi allaqachon mavjud yoki validatsiya xatosi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: User already exists
+
+  /verify:
+    post:
+      tags:
+        - Auth
+      summary: OTP ni tasdiqlash
+      description: Emailga yuborilgan OTP kod orqali foydalanuvchini tasdiqlaydi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyRequest'
+            example:
+              email: ali@example.com
+              code: "123456"
+      responses:
+        '200':
+          description: OTP tasdiqlandi
+          headers:
+            Set-Cookie:
+              description: refresh_token cookie qaytariladi
+              schema:
+                type: string
+                example: refresh_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+              example:
+                message: Success
+                accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access.token
+        '400':
+          description: Foydalanuvchi topilmadi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: User not found
+        '401':
+          description: OTP topilmadi, muddati o'tgan yoki noto'g'ri OTP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Wrong OTP
+
+  /login:
+    post:
+      tags:
+        - Auth
+      summary: Login qilish
+      description: Email va parolni tekshiradi, to'g'ri bo'lsa emailga OTP yuboradi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              email: ali@example.com
+              password: "123456"
+      responses:
+        '200':
+          description: Emailga OTP yuborildi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+              example:
+                message: Please check your email
+        '400':
+          description: Foydalanuvchi topilmadi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: User not found
+        '401':
+          description: Noto'g'ri parol
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Wrong password
+
+  /logout:
+    get:
+      tags:
+        - Auth
+      summary: Logout qilish
+      description: Foydalanuvchini tizimdan chiqaradi va refresh tokenni tozalaydi
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Muvaffaqiyatli logout qilindi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+              example:
+                message: Logged out
+        '400':
+          description: Foydalanuvchi topilmadi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: User not found
+        '401':
+          description: Avtorizatsiya xatosi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Unauthorized
+
+  /refresh:
+    get:
+      tags:
+        - Auth
+      summary: Access token yangilash
+      description: Cookie'dagi refresh token orqali yangi access token olish
+      responses:
+        '200':
+          description: Yangi access token qaytariladi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefreshResponse'
+              example:
+                accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.new.access.token
+        '401':
+          description: Refresh token noto'g'ri yoki mavjud emas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Invalid or missing refresh token
+
+  /forgot_password:
+    post:
+      tags:
+        - Auth
+      summary: Parolni tiklash
+      description: Email va yangi parol orqali foydalanuvchi parolini yangilaydi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+            example:
+              email: ali@example.com
+              newPassword: "654321"
+      responses:
+        '200':
+          description: Parol muvaffaqiyatli yangilandi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+              example:
+                message: Password updated successfully
+        '400':
+          description: Xato so'rov yoki foydalanuvchi topilmadi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: User not found
+        '401':
+          description: Avtorizatsiya xatosi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                message: Unauthorized
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+          example: Ali Valiyev
+        email:
+          type: string
+          format: email
+          example: ali@example.com
+        password:
+          type: string
+          minLength: 6
+          example: "123456"
+
+    VerifyRequest:
+      type: object
+      required:
+        - email
+        - code
+      properties:
+        email:
+          type: string
+          format: email
+          example: ali@example.com
+        code:
+          type: string
+          minLength: 6
+          maxLength: 6
+          example: "123456"
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: ali@example.com
+        password:
+          type: string
+          minLength: 6
+          example: "123456"
+
+    ForgotPasswordRequest:
+      type: object
+      required:
+        - email
+        - newPassword
+      properties:
+        email:
+          type: string
+          format: email
+          example: ali@example.com
+        newPassword:
+          type: string
+          minLength: 6
+          example: "654321"
+
+    VerifyResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Success
+        accessToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.access.token
+
+    RefreshResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.new.access.token
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Success
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User not found

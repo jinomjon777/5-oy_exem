@@ -11,8 +11,4 @@ brendRouter.get("/get_all_brends", getAllBrend)
 brendRouter.get("/get_one_brend/:id", getOneBrend)
 brendRouter.get("/search", search)
 
-brendRouter.post("/add_brend", authorization, adminMiddleware, brendValidatorMiddleware, addBrend)
-brendRouter.put("/update_brend/:id", authorization, adminMiddleware, updateBrend)
-brendRouter.delete("/delete_brend/:id", authorization, adminMiddleware, deleteBrend)
-
 module.exports = brendRouter

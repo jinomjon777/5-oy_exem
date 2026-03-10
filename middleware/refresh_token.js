@@ -2,22 +2,30 @@ const CustomErrorhandler = require("../error/custom-error.handler")
 const jwt = require("jsonwebtoken")
 const { access_token } = require("../utils/jwt")
 
-module.exports= function(req,res,next){
+module.exports = function(req,res,next){
   try{
-    const authorization=req.cookies.refresh_token
 
-    if(!authorization){
+    const refreshToken = req.cookies.refresh_token
+
+    if(!refreshToken){
       throw CustomErrorhandler.UnAuthorized("Refresh token not found")
     }
 
-    const decode=jwt.verify(token,process.env.REFRESH_SECRET_KEY)
-    
+    const decode = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_SECRET_KEY
+    )
+
     const accessToken = access_token({
-          id: decode._id, 
-          role: decode.role, 
-          email: decode.email
-        })
-    res.status(200).json({accessToken})
+      id: decode.id,
+      role: decode.role,
+      email: decode.email
+    })
+
+    res.status(200).json({
+      accessToken
+    })
+
   }catch(error){
     next(error)
   }

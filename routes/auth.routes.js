@@ -3,7 +3,7 @@ const { Verify, Register, Login, Logout } = require("../controller/auth.controll
 const { ForgotPassword } = require("../controller/forgot.controller")
 const forgotPasswordMiddleware = require("../middleware/forgot_password.middleware")
 const authorization = require("../middleware/authorization")
-const { refresh_token } = require("../utils/jwt")
+const refresh_token = require("../middleware/refresh_token")
 
 
 

@@ -1,18 +1,17 @@
 const { Router } = require("express")
 const adminMiddleware = require("../middleware/admin.middleware")
-
-
-const {getAllModels,getOneModel,getModelsByBrend,addModel,updateModel,deleteModel} = require("../controller/model.controller")
 const authorization = require("../middleware/authorization")
+const { getAllModels, getOneModel, getModelsByBrend, getMyModels, getOneMyModel, addModel, updateModel, deleteModel } = require("../controller/model.controller")
+
+
 
 const Modelrouter = Router()
 
+// user tomoni
 Modelrouter.get("/get_all_models", getAllModels)
 Modelrouter.get("/get_one_model/:id", getOneModel)
 Modelrouter.get("/get_models_by_brend/:brendId", getModelsByBrend)
 
-Modelrouter.post("/add_model", authorization, adminMiddleware, addModel)
-Modelrouter.put("/update_model/:id", authorization, adminMiddleware, updateModel)
-Modelrouter.delete("/delete_model/:id", authorization, adminMiddleware, deleteModel)
+
 
 module.exports = Modelrouter
