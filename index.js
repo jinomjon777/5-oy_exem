@@ -15,6 +15,7 @@ const yaml = require("yamljs")
 const swaggerUI = require("swagger-ui-express")
 const adminRouter = require("./routes/admin.model.routes")
 const adminBrendRouter = require("./routes/admin.brend.routes")
+const requestLogger = require("./middleware/request.logger.middleware")
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -38,6 +39,7 @@ app.use(brendRouter)
 app.use(Modelrouter)
 app.use("/admin", adminRouter)
 app.use("/admin", adminBrendRouter)
+app.use(requestLogger)
 
 app.use(errorMiddleware)
 

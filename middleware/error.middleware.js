@@ -1,22 +1,17 @@
-const CustomErrorhandler = require("../error/custom-error.handler")
+const logger = require("../config/logger")
 
-module.exports = function(err, req, res, next){
-  if (res.headersSent) return next(err)
+module.exports = (err, req, res, next) => {
+  logger.error(err.message, {
+    method: req.method,
+    url: req.originalUrl,
+    body: req.body,
+    params: req.params,
+    query: req.query,
+    stack: err.stack,
+    user: req.user ? req.user.id : null
+  })
 
-  if(err instanceof CustomErrorhandler){
-    return res.status(err.status || 400).json({message: err.message, errors: err.errors})
-  }
-
-  if(err.name === "ValidationError"){
-    const validationError = Object.values(err.errors).map(error=> error.message)
-
-    return res.status(400).json({
-      messageName: "ValidationError",
-      errors: validationError
-    })
-  }
-
-  return res.status(500).json({
-    message: err.message
+  res.status(err.status || 500).json({
+    message: err.message || "Internal server error"
   })
 }

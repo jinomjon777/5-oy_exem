@@ -1,0 +1,11 @@
+2026-03-11 09:57:26 [error]: TokenExpiredError: jwt expired
+    at D:\backend\5-oy\exem\node_modules\jsonwebtoken\verify.js:190:21
+    at getSecret (D:\backend\5-oy\exem\node_modules\jsonwebtoken\verify.js:97:14)
+    at module.exports [as verify] (D:\backend\5-oy\exem\node_modules\jsonwebtoken\verify.js:101:10)
+    at module.exports (D:\backend\5-oy\exem\middleware\authorization.js:19:22)
+    at Layer.handleRequest (D:\backend\5-oy\exem\node_modules\router\lib\layer.js:152:17)
+    at next (D:\backend\5-oy\exem\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (D:\backend\5-oy\exem\node_modules\router\lib\route.js:117:3)
+    at handle (D:\backend\5-oy\exem\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (D:\backend\5-oy\exem\node_modules\router\lib\layer.js:152:17)
+    at D:\backend\5-oy\exem\node_modules\router\index.js:295:15 {"method":"POST","url":"/admin/profile/add_model","params":{},"query":{},"user":null}

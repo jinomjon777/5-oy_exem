@@ -1,7 +1,7 @@
 const { Router } = require("express")
 const authorization = require("../middleware/authorization")
 const adminMiddleware = require("../middleware/admin.middleware")
-const uploadModelImages = require("../middleware/module.upload.middleware")
+const uploadModelImages = require("../middleware/model.upload.middleware")
 const {
   getAdminProfile,
   getAdminModels,
