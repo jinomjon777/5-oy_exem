@@ -9,3 +9,38 @@
     at handle (D:\backend\5-oy\exem\node_modules\router\index.js:435:11)
     at Layer.handleRequest (D:\backend\5-oy\exem\node_modules\router\lib\layer.js:152:17)
     at D:\backend\5-oy\exem\node_modules\router\index.js:295:15 {"method":"POST","url":"/admin/profile/add_model","params":{},"query":{},"user":null}
+2026-03-11 10:04:48 [error]: Error: Brend already exists
+    at CustomErrorhandler.BadRequest (D:\backend\5-oy\exem\error\custom-error.handler.js:12:12)
+    at addAdminBrend (D:\backend\5-oy\exem\controller\admin.brend.controller.js:47:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {"method":"POST","url":"/admin/profile/add_brend","body":{"imageURL":"http://localhost:4001/images/brend.g","brendName":"Nissan"},"params":{},"query":{},"user":"69a985b1aa29933c7897de08"}
+2026-03-11 10:06:04 [error]: Error: 3 ta rasm ham yuklanishi kerak
+    at CustomErrorhandler.BadRequest (D:\backend\5-oy\exem\error\custom-error.handler.js:12:12)
+    at addAdminModel (D:\backend\5-oy\exem\controller\admin.model.js:81:32)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {"method":"POST","url":"/admin/profile/add_model","body":{"brendInfo":"69b054d25f636e222d6370cd","title":"Sentra","tanirovkasi":"bor ","motor":"2.5","year":"2023","color":"qora","distance":"10000","gearbook":"avtomat karobka","price":"19000","description":"Holati juda yaxshi ","imageURL":""},"params":{},"query":{},"user":"69a985b1aa29933c7897de08"}
+2026-03-11 10:08:46 [error]: ValidationError: model validation failed: motor: Path `motor` is required.
+    at Document.invalidate (D:\backend\5-oy\exem\node_modules\mongoose\lib\document.js:3405:32)
+    at validatePath (D:\backend\5-oy\exem\node_modules\mongoose\lib\document.js:3177:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async Promise.all (index 2)
+    at async model.$__validate (D:\backend\5-oy\exem\node_modules\mongoose\lib\document.js:3118:3)
+    at async model.validate (D:\backend\5-oy\exem\node_modules\mongoose\lib\document.js:2687:5)
+    at async model.validateBeforeSavePreSave (D:\backend\5-oy\exem\node_modules\mongoose\lib\plugins\validateBeforeSave.js:39:5)
+    at async Kareem.execPre (D:\backend\5-oy\exem\node_modules\kareem\index.js:70:24)
+    at async model.$__save (D:\backend\5-oy\exem\node_modules\mongoose\lib\model.js:371:5)
+    at async model.save (D:\backend\5-oy\exem\node_modules\mongoose\lib\model.js:614:5) {"method":"POST","url":"/admin/profile/add_model","body":{"brendInfo":"69b054d25f636e222d6370cd","title":"Sentra","tanirovkasi":"bor ","motor":"","year":"2023","color":"qora","distance":"10000","gearbook":"avtomat karobka","price":"19000","description":"Holati juda yaxshi "},"params":{},"query":{},"user":"69a985b1aa29933c7897de08"}
+2026-03-11 10:39:49 [error]: Error: min is not defined
+    at CustomErrorhandler.InternalServerError (D:\backend\5-oy\exem\error\custom-error.handler.js:24:12)
+    at sendMessage (D:\backend\5-oy\exem\utils\sint.email.js:512:30)
+    at Login (D:\backend\5-oy\exem\controller\auth.controller.js:111:15) {"method":"POST","url":"/login","body":{"email":"jinomjon54@gmail.com","password":"inomjon0105"},"params":{},"query":{},"user":null}
+2026-03-11 10:41:33 [error]: Error: min is not defined
+    at CustomErrorhandler.InternalServerError (D:\backend\5-oy\exem\error\custom-error.handler.js:24:12)
+    at sendMessage (D:\backend\5-oy\exem\utils\sint.email.js:512:30)
+    at Login (D:\backend\5-oy\exem\controller\auth.controller.js:111:15) {"method":"POST","url":"/login","body":{"email":"jinomjon54@gmail.com","password":"inomjon0105"},"params":{},"query":{},"user":null}
+2026-03-11 10:42:05 [error]: Error: min is not defined
+    at CustomErrorhandler.InternalServerError (D:\backend\5-oy\exem\error\custom-error.handler.js:24:12)
+    at sendMessage (D:\backend\5-oy\exem\utils\sint.email.js:512:30)
+    at Login (D:\backend\5-oy\exem\controller\auth.controller.js:111:15) {"method":"POST","url":"/login","body":{"email":"jinomjon54@gmail.com","password":"inomjon0105"},"params":{},"query":{},"user":null}
+2026-03-11 10:42:07 [error]: Error: min is not defined
+    at CustomErrorhandler.InternalServerError (D:\backend\5-oy\exem\error\custom-error.handler.js:24:12)
+    at sendMessage (D:\backend\5-oy\exem\utils\sint.email.js:512:30)
+    at Login (D:\backend\5-oy\exem\controller\auth.controller.js:111:15) {"method":"POST","url":"/login","body":{"email":"jinomjon54@gmail.com","password":"inomjon0105"},"params":{},"query":{},"user":null}
